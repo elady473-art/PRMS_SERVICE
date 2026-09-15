@@ -1,0 +1,132 @@
+{
+  "realm": "prms",
+  "enabled": true,
+  "displayName": "PRMS - INSA",
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "accessTokenLifespan": 3600,
+  "refreshTokenMaxReuse": 0,
+  "roles": {
+    "realm": [
+      { "name": "PROCUREMENT_ADMIN", "description": "Full access to all procurement operations" },
+      { "name": "REQUESTER", "description": "Can create and track purchase requests" },
+      { "name": "SUPPLIER", "description": "Supplier portal access" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "prms-frontend",
+      "name": "PRMS Frontend",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://localhost:3001/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://localhost:3001"
+      ],
+      "protocol": "openid-connect",
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "access.token.lifespan": "3600"
+      },
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ]
+    },
+    {
+      "clientId": "prms-swagger",
+      "name": "PRMS Swagger UI",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:8080/swagger-ui/*",
+        "http://localhost:8080/swagger-ui/oauth2-redirect.html"
+      ],
+      "webOrigins": [
+        "http://localhost:8080"
+      ],
+      "protocol": "openid-connect",
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "access.token.lifespan": "3600"
+      },
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "procurement_admin",
+      "email": "procurement.admin@insa.edu.et",
+      "firstName": "Procurement",
+      "lastName": "Admin",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["PROCUREMENT_ADMIN"]
+    },
+    {
+      "username": "requester",
+      "email": "abebe.kebede@insa.edu.et",
+      "firstName": "Abebe",
+      "lastName": "Kebede",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "requester123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["REQUESTER"]
+    },
+    {
+      "username": "supplier",
+      "email": "tigist.haile@supplier.com",
+      "firstName": "Tigist",
+      "lastName": "Haile",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "supplier123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["SUPPLIER"]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+import type { Metadata } from "next";
+import "./globals.css";
+import { QueryProvider } from "@/providers/query-provider";
+import { Toaster } from "@/components/ui/toaster";
+
+export const metadata: Metadata = {
+  title: "ERP-INSA | Procurement Resource Management System",
+  description: "Enterprise Resource Planning - Procurement Management Module",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className="bg-white text-gray-900 antialiased">
+        <QueryProvider>
+          {children}
+          <Toaster />
+        </QueryProvider>
+      </body>
+    </html>
+  );
+}
