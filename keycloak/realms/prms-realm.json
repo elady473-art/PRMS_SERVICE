@@ -14,8 +14,8 @@
   "roles": {
     "realm": [
       { "name": "PROCUREMENT_ADMIN", "description": "Full access to all procurement operations" },
-      { "name": "REQUESTER", "description": "Can create and track purchase requests" },
-      { "name": "SUPPLIER", "description": "Supplier portal access" }
+      { "name": "REQUESTER",         "description": "Can create and track purchase requests" },
+      { "name": "SUPPLIER",          "description": "Supplier portal access" }
     ]
   },
   "clients": [
@@ -30,11 +30,15 @@
       "serviceAccountsEnabled": false,
       "redirectUris": [
         "http://localhost:3000/*",
-        "http://localhost:3001/*"
+        "http://localhost:3001/*",
+        "https://*.vercel.app/*",
+        "https://YOUR_VERCEL_DOMAIN/*"
       ],
       "webOrigins": [
         "http://localhost:3000",
-        "http://localhost:3001"
+        "http://localhost:3001",
+        "https://*.vercel.app",
+        "https://YOUR_VERCEL_DOMAIN"
       ],
       "protocol": "openid-connect",
       "attributes": {
@@ -60,10 +64,13 @@
       "serviceAccountsEnabled": false,
       "redirectUris": [
         "http://localhost:8080/swagger-ui/*",
-        "http://localhost:8080/swagger-ui/oauth2-redirect.html"
+        "http://localhost:8080/swagger-ui/oauth2-redirect.html",
+        "https://YOUR_BACKEND_RAILWAY_DOMAIN/swagger-ui/*",
+        "https://YOUR_BACKEND_RAILWAY_DOMAIN/swagger-ui/oauth2-redirect.html"
       ],
       "webOrigins": [
-        "http://localhost:8080"
+        "http://localhost:8080",
+        "https://YOUR_BACKEND_RAILWAY_DOMAIN"
       ],
       "protocol": "openid-connect",
       "attributes": {
@@ -88,11 +95,7 @@
       "enabled": true,
       "emailVerified": true,
       "credentials": [
-        {
-          "type": "password",
-          "value": "admin123",
-          "temporary": false
-        }
+        { "type": "password", "value": "admin123", "temporary": false }
       ],
       "realmRoles": ["PROCUREMENT_ADMIN"]
     },
@@ -104,11 +107,7 @@
       "enabled": true,
       "emailVerified": true,
       "credentials": [
-        {
-          "type": "password",
-          "value": "requester123",
-          "temporary": false
-        }
+        { "type": "password", "value": "requester123", "temporary": false }
       ],
       "realmRoles": ["REQUESTER"]
     },
@@ -120,11 +119,7 @@
       "enabled": true,
       "emailVerified": true,
       "credentials": [
-        {
-          "type": "password",
-          "value": "supplier123",
-          "temporary": false
-        }
+        { "type": "password", "value": "supplier123", "temporary": false }
       ],
       "realmRoles": ["SUPPLIER"]
     }

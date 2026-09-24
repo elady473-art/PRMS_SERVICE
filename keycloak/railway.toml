@@ -1,0 +1,12 @@
+[build]
+# Keycloak uses the official image directly — no custom build needed.
+builder = "IMAGE"
+image = "quay.io/keycloak/keycloak:24.0.4"
+
+[deploy]
+# start-dev is fine for demos; for production swap to: start --optimized
+startCommand = "start-dev --import-realm"
+healthcheckPath = "/realms/prms/.well-known/openid-configuration"
+healthcheckTimeout = 180
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3

@@ -1,0 +1,97 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:prms}?sslmode=${POSTGRES_SSL_MODE:prefer}
+    username: ${POSTGRES_USER:prms_user}
+    password: ${POSTGRES_PASSWORD:prms123}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5          # keep low on Railway free tier
+      minimum-idle: 2
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8180/realms/prms}
+
+  jpa:
+    hibernate:
+      # 'update' is safe for production: adds columns/tables but never drops them.
+      # Switch to 'validate' once the schema is fully stable.
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: false
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+
+  flyway:
+    # Enable Flyway for production-grade migrations.
+    # Set FLYWAY_ENABLED=false locally if you prefer ddl-auto=create-drop for dev.
+    enabled: ${FLYWAY_ENABLED:false}
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000ms
+      # Gracefully degrade if Redis is unavailable (e.g. no Redis on Railway free plan)
+      # The app itself must handle cache misses; this just prevents startup failure.
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    # If no RabbitMQ is available set RABBITMQ_ENABLED=false in your env and
+    # remove the AMQP auto-configuration (or use a managed CloudAMQP add-on).
+
+server:
+  port: ${PORT:8080}       # Railway injects $PORT automatically — do NOT hardcode 8080
+  forward-headers-strategy: native   # trust X-Forwarded-* from Railway's proxy
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    oauth2-redirect-url: ${BACKEND_URL:http://localhost:8080}/swagger-ui/oauth2-redirect.html
+    oauth:
+      client-id: prms-swagger
+      client-secret: ""
+      use-pkce-with-authorization-code-grant: true
+
+integration:
+  fms:
+    base-url: ${FMS_BASE_URL:http://localhost:8082}
+  hrm:
+    base-url: ${HRM_BASE_URL:http://localhost:8083}
+  inventory:
+    base-url: ${INVENTORY_BASE_URL:http://localhost:8081}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  level:
+    root: ${LOG_LEVEL:INFO}
+    com.erp.prms: ${APP_LOG_LEVEL:INFO}
+    org.springframework.security: WARN
